@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Aulas;
 use app\models\Dispositivos;
 use app\models\Ordenadores;
 use app\models\OrdenadoresSearch;
@@ -74,6 +75,10 @@ class OrdenadoresController extends Controller
     public function actionCreate()
     {
         $model = new Ordenadores();
+        $items = Aulas::find()
+            ->select(['denominacion'])
+            ->indexBy('id')
+            ->column();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -81,6 +86,7 @@ class OrdenadoresController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'items' => $items,
         ]);
     }
 
@@ -95,12 +101,18 @@ class OrdenadoresController extends Controller
     {
         $model = $this->findModel($id);
 
+        $items = Aulas::find()
+            ->select(['denominacion'])
+            ->indexBy('id')
+            ->column();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'items' => $items,
         ]);
     }
 

@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "ordenadores".
  *
@@ -52,7 +50,7 @@ class Ordenadores extends \yii\db\ActiveRecord
             'codigo' => 'Codigo',
             'marca' => 'Marca',
             'modelo' => 'Modelo',
-            'aula_id' => 'Aula ID',
+            'aula_id' => 'Aula',
         ];
     }
 

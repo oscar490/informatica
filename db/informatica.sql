@@ -46,23 +46,27 @@ CREATE TABLE dispositivos
     , tipo_id      BIGINT       REFERENCES tipo (id) ON DELETE
                                 NO ACTION ON UPDATE CASCADE
     , ordenador_id BIGINT       REFERENCES ordenadores (id) ON DELETE
-                                NO ACTION ON UPDATE CASCADE
+                                CASCADE ON UPDATE CASCADE
                                 DEFAULT NULL
     , aula_id      BIGINT       REFERENCES aulas (id) ON DELETE
                                 NO ACTION ON UPDATE CASCADE
 );
 
-/* DROP TABLE IF EXISTS cambios CASCADE;
+DROP TABLE IF EXISTS cambios CASCADE;
 
 CREATE TABLE cambios
 (
-      id             BIGSERIAL PRIMARY KEY
-    , ordenador_id   BIGINT    REFERENCES ordenadores (id) ON DELETE
-                               NO ACTION ON UPDATE CASCADE
-    , dispositivo_id BIGINT    REFERENCES dispositivos (id) ON DELETE
-                               NO ACTION ON UPDATE CASCADE
-    ,
-); */
+      id             BIGSERIAL    PRIMARY KEY
+    , ordenador_id   BIGINT       REFERENCES ordenadores (id) ON DELETE
+                                  NO ACTION ON UPDATE CASCADE
+    , dispositivo_id BIGINT       REFERENCES dispositivos (id) ON DELETE
+                                  NO ACTION ON UPDATE CASCADE
+    , origen         BIGINT       NOT NULL REFERENCES aulas (id) ON DELETE
+                                  NO ACTION ON UPDATE CASCADE
+    , destino        BIGINT       NOT NULL REFERENCES aulas (id) ON DELETE
+                                  NO ACTION ON UPDATE CASCADE
+    , created_at     TIMESTAMP(0) NOT NULL DEFAULT localtimestamp
+);
 
 INSERT INTO aulas (numero, denominacion)
     VALUES (100, 'Departamento de informática'),
@@ -83,4 +87,4 @@ INSERT INTO tipo (denominacion)
 INSERT INTO dispositivos (codigo, marca, modelo, tipo_id, ordenador_id, aula_id)
     VALUES (10, 'NVIDIA', 'Geforce', 1, 1, null),
             (20, 'DVDROM', 'SuperDVD', 2, 1, null),
-            (30, 'Sandisk', 'ARTGF', 3, default, 1);
+            (30, 'Sandisk', 'ARTGF', 3, null, 1);

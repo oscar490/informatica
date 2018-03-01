@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "aulas".
  *
@@ -44,7 +42,7 @@ class Aulas extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'numero' => 'Numero',
-            'denominacion' => 'Denominacion',
+            'denominacion' => 'Aula',
         ];
     }
 

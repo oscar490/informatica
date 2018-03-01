@@ -18,10 +18,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'modelo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'aula_id')->textInput() ?>
+    <?= $form->field($model, 'aula_id')->dropdownList([
+            'Aulas'=>$items,
+        ]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Añadir', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

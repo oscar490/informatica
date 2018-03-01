@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Ordenadores;
 
 /**
  * OrdenadoresSearch represents the model behind the search form of `app\models\Ordenadores`.
@@ -20,7 +18,7 @@ class OrdenadoresSearch extends Ordenadores
         return [
             [['id', 'aula_id'], 'integer'],
             [['codigo'], 'number'],
-            [['marca', 'modelo'], 'safe'],
+            [['marca', 'modelo', 'aula.denominacion'], 'safe'],
         ];
     }
 
@@ -33,8 +31,15 @@ class OrdenadoresSearch extends Ordenadores
         return Model::scenarios();
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), [
+            'aula.denominacion',
+        ]);
+    }
+
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -42,13 +47,19 @@ class OrdenadoresSearch extends Ordenadores
      */
     public function search($params)
     {
-        $query = Ordenadores::find();
+        $query = Ordenadores::find()
+            ->joinWith('aula');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['aula.denominacion'] = [
+            'asc' => ['aulas.denominacion' => SORT_ASC],
+            'desc' => ['aulas.denominacion' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -66,7 +77,12 @@ class OrdenadoresSearch extends Ordenadores
         ]);
 
         $query->andFilterWhere(['ilike', 'marca', $this->marca])
-            ->andFilterWhere(['ilike', 'modelo', $this->modelo]);
+            ->andFilterWhere(['ilike', 'modelo', $this->modelo])
+            ->andFilterWhere([
+                'ilike',
+                'aulas.denominacion',
+                $this->getAttribute('aula.denominacion'),
+            ]);
 
         return $dataProvider;
     }
