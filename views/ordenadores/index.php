@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Dispositivos;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdenadoresSearch */
@@ -28,6 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'marca',
             'modelo',
             'aula.denominacion',
+            [
+                'label'=>'Número de dipositivos',
+                'value'=> function($data) {
+                    $dispositivos = Dispositivos::find()
+                        ->where(['ordenador_id'=>$data->id]);
+                    return $dispositivos->count();
+                }
+            ],
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
